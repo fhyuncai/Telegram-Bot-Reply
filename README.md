@@ -1,5 +1,8 @@
 # Telegram Bot Reply
 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/fhyuncai/Telegram-Bot-Reply?style=flat-square)
+![GitHub](https://img.shields.io/github/license/fhyuncai/Telegram-Bot-Reply?style=flat-square)
+
 > 通过 Telegram bot 通知和回复博客评论。
 
 ## 当前版本
@@ -16,7 +19,7 @@ Proxy (Python)：V1.0 (2020/04/26)
 
 ## 安装教程
 
-下载源代码并将 tgbot-reply 文件夹解压到 WordPress 插件目录 (/wp-content/plugins/)，前往 WordPress 后台启用并配置相关信息。
+前往 [Release 页面](https://github.com/fhyuncai/Telegram-Bot-Reply/releases/latest)下载源代码并将 tgbot-reply 文件夹解压到 WordPress 插件目录 (/wp-content/plugins/)，前往 WordPress 后台启用并配置相关信息。
 
 如需使用回复功能，需在**保存配置后**点击 “更新 Telegram Bot Webhook” 按钮更新 Telegram bot webhook 配置。
 
