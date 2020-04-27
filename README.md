@@ -48,6 +48,34 @@ pip3 install Flask gevent requests
 python3 proxy.py
 ```
 
+##### systemd 配置
+```
+# /usr/lib/systemd/system/proxy-tool.service
+
+[Unit]
+Description=Telegram Bot API Proxy
+Documentation=https://github.com/fhyuncai/Telegram-Bot-Reply
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /path/to/proxy-tool/proxy.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+##### Supervisor 配置
+```
+[program:proxy-tool]
+process_name=%(program_name)s
+command=python3 /path/to/proxy-tool/proxy.py
+autostart=true
+autorestart=trueili.log
+redirect_stderr=true
+stdout_logfile=/var/log/proxy-tool/proxy-tool.log
+```
+
 服务启动后在插件设置页面配置代理地址 (如：http://111.111.111.111:64321/proxy) 即可。
 
 *注：如需后台运行服务可使用 screen 或 nohup 运行程序*
