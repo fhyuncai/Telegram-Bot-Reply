@@ -35,14 +35,14 @@ Proxy (Python)：V1.0 (2020/04/26)
 
 #### PHP 版
 
-将 proxy-tool 内的 proxy.php 以及 WordPress 本插件目录内的 SecertKey.php (需要启用插件才会生成) 上传至可直连 Telegram 的 Web 服务器 (PHP Version >= 5.3)，并在插件设置页面配置访问 proxy.php 的地址 (如：https://example.com/proxy.php) 即可。
+将 proxy-tool-php 内的 proxy.php 以及 WordPress 本插件目录内的 SecertKey.php (需要启用插件才会生成) 上传至可直连 Telegram 的 Web 服务器 (PHP Version >= 5.3)，并在插件设置页面配置访问 proxy.php 的地址 (如：https://example.com/proxy.php) 即可。
 
 #### Python 版
 
-将 proxy-tool 内的 proxy.py 上传至可直连 Telegram 的服务器，并执行以下命令安装所需模块：
+将 proxy-tool-python 内的所有文件上传至可直连 Telegram 的服务器，并执行以下命令安装所需模块：
 
 ```
-pip3 install Flask gevent requests
+pip3 install -r requirements.txt
 ```
 
 安装完成后编辑 proxy.py 文件，修改第 13 行的 SecertKey 与 WordPress 本插件目录内 SecertKey.php 中的 SecertKey 一致，保存后执行以下命令启动服务：
@@ -58,7 +58,7 @@ python3 proxy.py
 ##### systemd 配置
 
 ```
-# /usr/lib/systemd/system/proxy-tool.service
+# /usr/lib/systemd/system/proxy-tool-python.service
 
 [Unit]
 Description=Telegram Bot API Proxy
@@ -66,7 +66,7 @@ Documentation=https://github.com/fhyuncai/Telegram-Bot-Reply
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/python3 /path/to/proxy-tool/proxy.py
+ExecStart=/usr/bin/python3 /path/to/proxy-tool-python/proxy.py
 Restart=always
 
 [Install]
@@ -78,11 +78,11 @@ WantedBy=multi-user.target
 ```
 [program:proxy-tool]
 process_name=%(program_name)s
-command=python3 /path/to/proxy-tool/proxy.py
+command=python3 /path/to/proxy-tool-python/proxy.py
 autostart=true
 autorestart=trueili.log
 redirect_stderr=true
-stdout_logfile=/var/log/proxy-tool/proxy-tool.log
+stdout_logfile=/var/log/proxy-tool-python/proxy-tool.log
 ```
 
 ## 更新日志
