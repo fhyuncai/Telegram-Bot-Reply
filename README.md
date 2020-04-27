@@ -41,17 +41,22 @@ Proxy (Python)：V1.0 (2020/04/26)
 
 将 proxy-tool 内的 proxy.py 上传至可直连 Telegram 的服务器，并执行以下命令安装所需模块：
 
-```bash
+```
 pip3 install Flask gevent requests
 ```
 
 安装完成后编辑 proxy.py 文件，修改第 13 行的 SecertKey 与 WordPress 本插件目录内 SecertKey.php 中的 SecertKey 一致，保存后执行以下命令启动服务：
 
-```bash
+```
 python3 proxy.py
 ```
 
+服务启动后在插件设置页面配置代理地址 (如：http://111.111.111.111:64321/proxy) 即可。
+
+*注：如需后台运行服务可使用 screen, nohup, systemd 或 Supervisor 运行程序*
+
 ##### systemd 配置
+
 ```
 # /usr/lib/systemd/system/proxy-tool.service
 
@@ -69,6 +74,7 @@ WantedBy=multi-user.target
 ```
 
 ##### Supervisor 配置
+
 ```
 [program:proxy-tool]
 process_name=%(program_name)s
@@ -78,10 +84,6 @@ autorestart=trueili.log
 redirect_stderr=true
 stdout_logfile=/var/log/proxy-tool/proxy-tool.log
 ```
-
-服务启动后在插件设置页面配置代理地址 (如：http://111.111.111.111:64321/proxy) 即可。
-
-*注：如需后台运行服务可使用 screen 或 nohup 运行程序*
 
 ## 更新日志
 
