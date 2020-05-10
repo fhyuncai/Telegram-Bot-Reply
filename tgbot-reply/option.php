@@ -1,15 +1,32 @@
 <?php
 defined('TGBOT_REPLY_PATH') or exit;
+if(is_file(TGBOT_REPLY_DIR.'/SecertKey.php')){
+    require(TGBOT_REPLY_DIR.'/SecertKey.php');
+}else{
+    exit;
+}
 if($_POST['update_pluginoptions'] == 'true'){
     $message = tgbot_reply_update_pluginoptions();
     if($message == true){
         echo '<div id="message" class="updated"><h4>设置已保存</h4></div>';
     }else{
-        echo '<div id="message" class="error"><h4>设置未保存：'.$message.'</h4></div>';
+        echo '<div id="message" class="error"><h4>设置保存失败：'.$message.'</h4></div>';
     }
 }elseif($_POST['update_tgbotwebhook'] == 'true'){
     tgbot_reply_update_webhook();
     exit('Success');
+}
+
+if(is_file(TGBOT_REPLY_DIR.'/webhook_'.$SecertKey.'.php')){
+    $webhook_ver_str = file_get_contents(TGBOT_REPLY_DIR.'/webhook_'.$SecertKey.'.php');
+    $webhook_ver_a = strpos($webhook_ver_str,'* Version: ')+11;
+    $webhook_ver_b = strpos($webhook_ver_str,"\n",$webhook_ver_a);
+    $webhook_ver = substr($webhook_ver_str,$webhook_ver_a,$webhook_ver_b-$webhook_ver_a);
+    if(TGBOT_REPLY_WEBHOOK_VERSION != $webhook_ver){
+        echo '<div id="message" class="error"><h4>Webhook 文件版本不正确，请在保存设置后点击 “更新 Telegram Bot Webhook” 以更新文件</h4></div>';
+    }
+}else{
+    echo '<div id="message" class="error"><h4>首次使用请在保存设置后点击 “更新 Telegram Bot Webhook” 以更新 Webhook</h4></div>';
 }
 ?>
 <div class="wrap">
@@ -48,7 +65,7 @@ if($_POST['update_pluginoptions'] == 'true'){
         <input id="update_webhook" type="button" class="button button-primary" value="更新 Telegram Bot Webhook" />
         <input type="hidden" name="panel" value="0" id="active_panel_name" />
     </p>
-    Telegram Bot Reply 版本：<?php echo TGBOT_REPLY_VERSION ?> &nbsp; 作者：<a href="https://yuncaioo.com">FHYunCai</a> &nbsp; <!--<a href="https://yuncaioo.com">帮助</a>-->
+    Telegram Bot Reply 版本：<?php echo TGBOT_REPLY_VERSION ?> &nbsp; 作者：<a href="https://yuncaioo.com">FHYunCai</a> &nbsp; 版本发布：<a href="https://github.com/fhyuncai/Telegram-Bot-Reply/releases">Github Release</a> &nbsp; <!--<a href="https://yuncaioo.com">帮助</a>-->
 </form>
 
 <style>
@@ -135,11 +152,7 @@ function tgbot_reply_update_pluginoptions(){
 
 function tgbot_reply_update_webhook(){
     if(get_option('tgbot_reply_bot_token') != ''){
-        if(is_file(TGBOT_REPLY_DIR.'/SecertKey.php')){
-            require(TGBOT_REPLY_DIR.'/SecertKey.php');
-        }else{
-            exit;
-        }
+        global $SecertKey;
         $webhook_str = file_get_contents(TGBOT_REPLY_DIR.'/webhook.php');
         $webhook_str = str_replace('define(\'TGBOT_REPLY_WEBHOOK\',false);','define(\'TGBOT_REPLY_WEBHOOK\',true);',$webhook_str);
         file_put_contents(TGBOT_REPLY_DIR.'/webhook_'.$SecertKey.'.php',$webhook_str);

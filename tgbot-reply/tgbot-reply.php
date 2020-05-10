@@ -5,13 +5,14 @@ Plugin URI: https://yuncaioo.com
 Description: 通过 Telegram bot 通知和回复博客评论。
 Author: FHYunCai
 Author URI: https://yuncaioo.com
-Version: 1.0
+Version: 1.1
 */
 
 if(!defined('ABSPATH')) exit;
 define('TGBOT_REPLY_PATH',true);
 define('TGBOT_REPLY_DIR',__DIR__);
-define('TGBOT_REPLY_VERSION','1.0');
+define('TGBOT_REPLY_VERSION',1.1);
+define('TGBOT_REPLY_WEBHOOK_VERSION',1.1);
 
 if(is_file(TGBOT_REPLY_DIR.'/SecertKey.php')){
     require(TGBOT_REPLY_DIR.'/SecertKey.php');
@@ -65,7 +66,6 @@ add_filter("plugin_action_links_{$plugin}", 'tgbot_reply_register_plugin_setting
 
 if(get_option('tgbot_reply_newcomment_notify') == 'checked'){
     add_action('comment_post', 'tgbot_reply_function_comment_notify');
-    
 }
 
 
@@ -93,7 +93,7 @@ function tgbot_reply_function_comment_notify($comment_id){
             $s_postname = get_the_title($comment->comment_post_ID);
             $s_author = trim($comment->comment_author);
             $s_email = trim($comment->comment_author_email);
-            $s_website = trim($comment->comment_author_url);
+            $s_website = trim($comment->comment_author_url)?trim($comment->comment_author_url):'无';
             $s_content = trim($comment->comment_content);
             $s_commentlink = get_comment_link($comment_id);
             $message = "{$s_blogname} 收到一条新评论\n文章标题: {$s_postname}\n昵称: {$s_author}\n邮箱: {$s_email}\n网站: {$s_website}\n评论地址: {$s_commentlink}\n内容: \n{$s_content}\n\n[{$comment_id}]";
